@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<head>
+  <title>跑餅溫度、抽樣重量記錄表(P2515)</title>
+  <%= csrf_meta_tags %>
+  <%= render "/layouts/meta" %>
+  <%= stylesheet_pack_tag 'tailwindcss', 'paperstyle', media: 'all', 'data-turbolinks-track': 'reload' %>
+  
+</head>
+<style>
+  @page {
+    size: A4 landscape;
+  }
+</style>
+<body class="min-w-full">
+<div class="page">
+  <h3 class="font-bold text-center text-xl">舊振南食品股份有限公司</h3>
+  <h4 class="font-bold text-center">跑餅溫度、抽樣重量記錄表(P2515)</h4>
+  <span class="float-right"><%= date_format(@sign_info.work_date, "date")%></span>
+  <% case @inputs.length
+      when 1; n = 2
+      when 2; n = 1
+      when 3; n = 0
+      end %>
+  <table>
+    <thead>
+      <tr class="th-row1">
+      
+
+      <% @inputs.each do |input|%>
+      <th colspan="2" class="carId">車數&nbsp<%=  %></th>
+      <th><%#= score_for_checked(t.score, name1="frozen",name2="freshly", test1="冷凍",test2="現做") %></th>
+      <th colspan="2" class="sum">總數量&nbsp<%=  %></th>
+      <% end %>
+      <% n.times do %>
+      <th colspan="2" class="carId">車數&nbsp</th>
+      <th><%#= score_for_checked(t.score, name1="frozen",name2="freshly", test1="冷凍",test2="現做") %></th>
+      <th colspan="2" class="sum">總數量&nbsp</th>
+      <% end %>
+      </tr>
+      <tr class="th-row2">
+      <% 3.times do %>
+      <td>品項</td>
+      <td>數量</td>
+      <td class="th-sample">抽樣數量</td>
+      <td class="th-result">抽樣結果</td>
+      <td>處理方式</td>
+      <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <%arr = []
+      @inputs.each_with_index do |input, tindex|
+      arr.push(input.process_records.length)
+      end
+      maxlen = arr.max
+      len = maxlen - 1 
+      (0..len).each do |sindex|%>
+      <tr>
+      <% @inputs.each_with_index do |input, r| %>
+        <td class="item"><%=input.process_records[sindex].process_type %></td>
+        <td class="num"><%= %></td> 
+        <td class="sample"><%=%></td> 
+        <td class="result"><%= score_for_checked(input.process_records[sindex].state)%><p class="text-left">原因</p></td>
+        <td class="process"><%=%></td>
+      <% end %>
+      <% m= n*5 %>
+      <% n.times do %>
+        <td></td>
+        <% end %>
+      <% end %>
+      </tr>
+      <% titles = ["烤完時間","冷卻時間","冷卻溫度","記錄者"] %>
+      <% el = ['end_at', 'score', 'item', 'recorder.name']%>
+      <% titles.each_with_index do |title, index|%>
+      <tr>
+        <td colspan="2"><%= title%></td>
+        <% @inputs.each do |input| %>
+        <% input.id == 1 ? colspan=3 : colspan= 5%>
+        <%=content_tag(:td, "#{date_format(input.process_records[0][el[index]])}", colspan: colspan)%>
+        <% end %>
+        <% n.times do %>
+        <td colspan= 5></td>
+        <% end %>
+      </tr>
+      <% end %>
+      
+    </tbody>
+  </table>
+  <div class="sign">
+    <%= @sign_info.manage_signer != nil ? content_tag(:span, "單位主管:#{@sign_info.manage_signer.name}" ,class:"float-left w-1/2") : content_tag(:span, "單位主管:", class:"float-left w-1/2") %>
+    <span class="float-right">Rev.1.0</span>
+  </div>
+</div>
+
+</body>
+</html>

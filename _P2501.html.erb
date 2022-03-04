@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<head>
+  <title>烤焙製程管制記錄表-旋轉爐(P2501)</title>
+  <%= csrf_meta_tags %>
+  <%= render "/layouts/meta" %>
+  <%= stylesheet_pack_tag 'tailwindcss', 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+<style>
+  @page {
+		size: A4;
+		margin: 0.5cm;
+	}
+
+	@media print {
+		.page {
+			position: relative;
+			margin: 0;
+		}
+	}
+
+	body {
+		font-size: 10pt;
+	}
+</style>
+<body class="min-w-full">
+
+  <div class="page">
+		<h3 class="font-bold text-center">舊振南食品股份有限公司</h3>
+		<h4 class="font-bold text-center">烤焙製程管制記錄表-旋轉爐(P2501)</h4>
+		<span class="float-right"><%= date_format(@sign_info.work_date, "date")%></span>
+		<span><%#= score_for_checked(@paper.score, name1="forming1",name2="forming2", test1="成型區(製程I)",test2="成型區(製程II)", el= :span) %></span>
+		<table class="table1">
+			<thead>
+				<tr class="th-row1">
+					<th rowspan="2">車數</th>
+					<th rowspan="2">烤焙前中心溫度</th>
+					<th colspan="6">旋轉烤爐</th>
+				</tr>
+				<tr class="th-row2">
+					<th>時間</th>
+					<th>溫度(℃)</th>
+					<th>風速(Hz)</th>
+					<th>時間</th>
+					<th>溫度(℃)</th>
+					<th>風速(Hz)</th>
+				</tr>
+			</thead>
+			<tbody>
+        <% @inputs.each do |input|%>
+				<tr classs="td-row1">
+					<td class="carId" rowspan="2"><%=  %></td>
+					<td class="before-baking" rowspan="2"><%= %><small>℃</small></td>
+        <% input.process_records.each do |record| %>
+					<td><span class="float-left">起</span><%= date_format(record.start_at)%></td>
+					<td class="temp" rowspan="2"><%= %><small>℃</small></td>
+					<td class="wind" rowspan="2"><%= %>Hz</td>
+        <% end %>
+				</tr>
+				<tr class="td-row2">
+        <% input.process_records.each do |record| %>
+					<td><span class="float-left">迄</span><%= date_format(record.end_at)%></td>
+        <% end %>
+				</tr>
+        <% end %>
+			</tbody>
+		</table>
+		<br />
+		<table class="table2">
+			<thead>
+				<tr>
+					<th></th>
+					<th>領料日期</th>
+					<th>有效日期</th>
+				</tr>
+			</thead>
+			<tbody>
+        <% @inputs.each do |input|%>
+				<% input.process_records.each do |record| %>
+				<tr>
+					<td><%= record.process_type%></td>
+					<td><%= date_format(record.start_at)%></td>
+					<td><%= date_format(record.end_at)%></td>
+				</tr>
+        <% end %>
+				<% end %>
+			</tbody>
+		</table>
+		<div class="sign">
+		<%= @sign_info.manage_signer != nil ? content_tag(:span, "單位主管:#{@sign_info.manage_signer.name}" ,class:"float-left w-1/2") : content_tag(:span, "單位主管:", class:"float-left w-1/2") %>
+    <%= @inputs.find_by(id: 1).recorder.name != nil ? content_tag(:span, "填表人:#{@inputs.find_by(id: 1).recorder.name}" ,class:"float-left") : content_tag(:span, "填表人:", class:"float-left") %>
+    <span class="float-right">Rev.1.0</span>
+		</div>
+	</div>
+</body>
+</html>

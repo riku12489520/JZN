@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<head>
+  <title>留切記錄表(P2517)</title>
+  <%= csrf_meta_tags %>
+  <%= render "/layouts/meta" %>
+  <%= stylesheet_pack_tag 'tailwindcss', 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+<style>
+  @page {
+    size: A4 landscape;
+    margin: 0.5cm;
+  }
+
+	@media print {
+		.page {
+			position: relative;
+			margin: 0;
+		}
+	}
+
+	body {
+		font-size: 10pt;
+	}
+</style>
+<body class="min-w-full">
+
+<div class="page">
+  <h3 class="font-bold text-center">舊振南食品股份有限公司</h3>
+  <h4 class="font-bold text-center">留切紀錄表(P2517)</h4>
+  <span class="float-right"><%= date_format(@sign_info.work_date, "date")%></span>
+  <table>
+    <thead>
+      <% titles=["第一階段", "第二階段", "第三階段"] %>
+      <tr class="h-14">
+        <th class="w-20"></th>
+        <% titles.each do |title| %>
+        <th colspan="2"><%= title %></th>
+        <th>處理方式</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% @inputs.each do |input|%>   
+      <tr>
+        <td class="item"><%=  %></td>
+        <% input.process_records.each do |record| %>
+          <td>數量&nbsp<p><%=  %></p></td>
+          <td>
+          <%= score_for_checked(record.state) %>
+          <p class="text-left">原因&nbsp</p>
+          </td>
+          <td class="process"><%=  %></td>
+        <% end %>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="sign">
+    <%= @sign_info.manage_signer != nil ? content_tag(:span, "單位主管:#{@sign_info.manage_signer.name}" ,class:"float-left w-1/2") : content_tag(:span, "單位主管:", class:"float-left w-1/2") %>
+    <%= @inputs.find_by(id: 1).recorder.name != nil ? content_tag(:span, "填表人:#{@inputs.find_by(id: 1).recorder.name}" ,class:"float-left") : content_tag(:span, "填表人:", class:"float-left") %>
+    <span class="float-right">Rev.1.0</span>
+  </div>
+</div>
+
+</body>
+</html>

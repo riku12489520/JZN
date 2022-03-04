@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<head>
+  <title>烤焙製程管制記錄表-三層爐(P2502)</title>
+  <%= csrf_meta_tags %>
+  <%= render "/layouts/meta" %>
+  <%= stylesheet_pack_tag 'tailwindcss', 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+<style>
+  @page {
+		size: A4;
+		margin: 0.5cm;
+	}
+
+	@media print {
+		.page {
+			position: relative;
+			margin: 0;
+		}
+	}
+
+	body {
+		font-size: 10pt;
+	}
+</style>
+<body class="min-w-full">
+  <div class="page">
+		<h3 class="font-bold text-center">舊振南食品股份有限公司</h3>
+		<h4 class="font-bold text-center">烤焙製程管制記錄表-三層爐(P2502)</h4>
+		<span class="float-right"><%= date_format(@sign_info.work_date, "date")%></span>
+		<table>
+			<thead>
+				<tr class="h-16">
+					<th rowspan="2">車數</th>
+					<th rowspan="2">機器別</th>
+					<% 2.times do %>
+					<th>時間</th>
+					<th>溫度(上火)</th>
+					<th>溫度(下火)</th>
+					<% end %>
+				</tr>
+			</thead>
+			<tbody>
+        <% @inputs.each do |input|  %>   
+        <tr classs="td-row1">
+					<td rowspan="2" class="carId"><%=  %></td>
+					<td rowspan="2" class="machine"><%=  %></td>
+					<% input.process_records.each do |record| %>
+						<td><span class="float-left">起</span><%= date_format(record.start_at)%></td>
+						<td rowspan="2"><%= %><small>℃</small></td>
+						<td rowspan="2"><%= %><small>℃</small></td>
+					<% end %>
+        </tr>
+				<tr class="td-row2">
+        <% input.process_records.each do |record| %>
+					<td><span class="float-left">迄</span><%= date_format(record.end_at) %></td>
+        <% end %>
+        </tr>
+        <% end %>
+			</tbody>			
+		</table>
+		<div class="sign">
+			<span class="float-left w-1/2">單位主管:<%= @sign_info.manage_signer_id %></span>
+      <span class="float-left">填表人:<%= @inputs.find_by(id: 1).recorder.name %></span>
+      <span class="float-right">Rev.1.0</span>
+		</div>
+	</div>
+
+</body>
+</html>

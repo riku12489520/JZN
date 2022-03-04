@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<head>
+  <title>包裝記錄表(P2503)</title>
+  <%= csrf_meta_tags %>
+  <%= render "/layouts/meta" %>
+  <%= stylesheet_pack_tag 'tailwindcss', 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+<style>
+  @page {
+    size: A4 landscape;
+    margin: 0.5cm;
+  }
+
+	@media print {
+		.page {
+			position: relative;
+			margin: 0;
+		}
+	}
+
+	body {
+		font-size: 10pt;
+	}
+</style>
+<body class="min-w-full">
+
+<div class="page">
+  <h3 class="font-bold text-center">舊振南食品股份有限公司</h3>
+  <h4 class="font-bold text-center">包裝記錄表(P2503)</h4>
+  <span class="float-left"><%= date_format(@sign_info.work_date, "date")%></span>
+  <span class="float-right">金檢機&nbsp<%= %>&nbsp號</span>
+  <table>
+    <thead>
+      <tr class="th-row1">
+        <th rowspan="3">品項</th>
+        <th rowspan="3">機台</th>
+        <th colspan="5">封口機</th>
+        <th colspan="4" >連續式包裝機</th>
+        <th colspan="7" >金屬檢測</th>
+        <th colspan="4" >外觀與封口密合度檢查</th>
+        <th rowspan="3">有效日期</th>
+        <th rowspan="3">操作人員<br/>簽名</th>
+        <th rowspan="3">單位主管<br/>簽名</th>
+        <th rowspan="3">品管人員<br/>抽測簽名</th>
+      </tr>
+      <tr class="th-row2">
+        <th colspan="2">封口</th>
+        <th colspan="2">預熱時間</th>
+        <th>下壓時間</th>
+      </tr>
+      <tr class="th-row3">
+        <th>指針</th>
+        <th>溫度(℃)</th>
+        <th>時間(秒)</th>
+        <th>指示燈閃爍</th>
+        <th>指示燈熄滅後 1-2秒</th>
+        <th>包裝袋</th>
+        <th>速度(個/分)</th>
+        <th>內/外輪溫度(℃)</th>
+        <th>上/下切刀溫度(℃)</th>
+        <th>檢測<br/>時間</th>
+        <th>首件檢查</th>
+        <th>作業中</th>
+        <th>維修後</th>
+        <th>鐵<br/>2.0<br/>mm</th>
+        <th>非鐵2.0<br/>mm</th>
+        <th>不鏽鋼2.0<br/>mm</th>
+        <th>首件檢查</th>
+        <th>作業中</th>
+        <th>日期清晰正確</th>
+        <th>色澤</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @papers.each do |t|%>
+      <tr class="td-row1">
+        <td rowspan="2" class="item" ><%= %></td>
+        <td rowspan="2" class="machine" ><%= %></td>
+        <td rowspan="2" class="pointer" ><%= %></td>
+        <td rowspan="2" class="temp" ><%= %></td>
+        <td rowspan="2" class="time" ><%= %></td>
+        <td rowspan="2" class="light-flicker" ><%= %></td>
+        <td rowspan="2" class="light-off" ><%= %></td>
+        <td rowspan="2" class="packing-bag" ><%= %></td>
+        <td rowspan="2" class="speed" ><%= %></td>
+        <td rowspan="2" class="wheel-temp" ><%= %></td>
+        <td rowspan="2" class="cutter-temp" ><%= %></td>
+        <td class="start_at"><span class="float-left">起</span><%= date_format(record.start_at) %></td>
+        <td rowspan="2" class="first-inspect" ><%= %></td>
+        <td rowspan="2" class="working" ><%= %></td>
+        <td rowspan="2" class="repaired" ><%= %></td>
+        <td rowspan="2" class="iron" ><%= %></td>
+        <td rowspan="2" class="non-ferrous" ><%= %></td>
+        <td rowspan="2" class="stainless-steel" ><%= %></td>
+        <td rowspan="2" class="first-inspect" ><%= %></td>
+        <td rowspan="2" class="working" ><%= %></td>
+        <td rowspan="2" class="date-correct" ><%= %></td>
+        <td rowspan="2" class="color" ><%= %></td>
+        <td rowspan="2" class="exp-date" ><%= %></td>
+        <td rowspan="2" class="operator-sign" ><%= %></td>
+        <td rowspan="2" class="supervisor-sign" ><%= %></td>
+        <td rowspan="2" class="qc-sign" ><%= %></td>
+      </tr>
+      <tr class="td-row2">
+        <td class="end_at"><span class="float-left">迄</span><%= date_format(record.end_at) %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="relative">
+    <p class="text-align -indent-3 ml-3">
+      備註：1.管制基準：依現場工作指導書之標準。<br/>
+      2.檢測頻率：中椪類：(平常檔期)次/每品項；(大檔期)次/3車；酥皮、油皮、餅皮、米吐司、麵包：次/每小時/每規格；<br/>
+      脫氧產品：次/每品項/每規格；小鳳：次/4車；若重新開機時必須重新檢測；正常：打ˇ，異常：X。<br/>
+      3.單位主管：次/≦1小時，定期確認；品管人員：次/≦3小時，進行抽檢。
+    </p>
+    <span class="absolute bottom-0 right-1/5">Rev.1.0</span>
+  </div>
+</div>
+
+
+</body>
+</html>
