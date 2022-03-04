@@ -1,0 +1,52 @@
+@page {
+  margin: 0.5cm;
+}
+
+@media print {
+  .page {
+    position: relative;
+  }
+}
+
+@media (max-width: 1920px) {
+  .page {
+    width: 1080px;
+    margin: auto;
+  }
+}
+
+@media (max-width: 1080px) {
+  body {
+    padding: 0 0.5rem;
+  }
+  .page {
+    width: 100%;
+  }
+}
+
+body {
+  font-size: 10pt;
+}
+
+.page {
+  h3,h4 {
+  text-align: center;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+  } 
+  th, td {
+    border: 1px solid #000;
+    border-collapse: collapse;
+    font-weight: initial;
+    text-align: center;
+  }
+  table {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  td {
+    padding: 5px 0;
+  }
+}
+
+
